@@ -1,0 +1,52 @@
+mvvm
+in js, classes objects functions are the same.
+
+model: the data
+
+view is what the user is looking at.
+
+the view is going to take the data and render it in the view.
+
+yelp api: qwhghEiICLbsy6Qah8bAuQ
+
+
+the filter function is going to be searching through the model.
+
+the third api goes in the little box.
+string pattern matching
+match string patterns on js
+
+the list view should have all the locations
+
+updating your view should be done in the view model or octopus class.
+
+you have to make an ajax request to a website's api.
+
+the markers are in the model?
+i think they are. if something disappears in the view, the markers should disappear too.
+
+enable-cors.org
+
+
+
+ViewModel - Similar to Octopus
+
+Declarative Bindings - connect view and viewmodel
+
+automatic ui refresh
+
+dependency tracking : models depends on others
+
+
+var myNum = ko.observable(5);
+//5 is the initial value
+
+observable arrays: knockout will update the changed data in the view, rather than re-render everything.
+
+
+computed observables computes other data that we are storing. (firstName + lastName = fullName)
+
+
+control flow
+foreach
+

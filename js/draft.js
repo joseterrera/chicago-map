@@ -85,3 +85,36 @@
 
 
 // //google maps
+
+
+
+
+name, lat lng
+
+viewmodel takes info from model and processes it in the view and places it in the dom
+
+
+ <input type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+      </span>
+    </div><!-- /input-group -->
+  </div>
+
+
+
+    <div class="row">
+      <div class='locations col-md-4'>
+        <div class="panel panel-default">
+          <ul data-bind="foreach: people">
+            <li>
+              <div>
+                <span data-bind="text: name"> </span>
+                <a href='#' data-bind='click: addChild '>Add child</a>
+                </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div><!-- /.col-md-4 -->
+      <div class"col-md-8" id="map-canvas"></div>
