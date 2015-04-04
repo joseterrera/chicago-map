@@ -86,6 +86,11 @@
 
 // //google maps
 
+var mapElement = document.getElementById('map-canvas');
+var map = new google.maps.Map(mapElement, {
+  zoom: 12,
+    center: new google.maps.LatLng(41.882702, -87.619394)
+});
 
 
 
@@ -118,3 +123,64 @@ viewmodel takes info from model and processes it in the view and places it in th
         </div>
       </div><!-- /.col-md-4 -->
       <div class"col-md-8" id="map-canvas"></div>
+
+var Location = function(name, lat, lng) {
+  this.name = name;
+  this.lat = lat;
+  this.lng = lng;
+}
+
+
+function ViewModel() {
+  var self = this;
+  self.locations = [
+    new Location("Dollop", 41.877124, -87.629006),
+    new Location("Magnificent Mile", 41.894809, -87.624214 ),
+    new Location("Willis Towers", 41.878876, -87.635915 ),
+    new Location("Millennium Park", 41.882702, -87.619394)
+    ]
+};
+
+  
+
+
+
+  ko.applyBindings(ViewModel);
+
+
+
+ <ul class="list-group" data-bind="foreach: locationsList">
+            <li class="list-group-item"><span data-bind="text: name"></span></li>
+        </ul>
+
+
+  var Location = function(name, lat, lng) {
+  this.name = name;
+  this.lat = lat;
+  this.lng = lng;
+}
+
+var initialLocations = [
+
+    {name: "Dollop",lat: 41.877124, lng: -87.629006 },
+      {name: "Magnificent Mile",lat: 41.894809, lng: -87.624214 },
+      {name: "Willis Towers",lat: 41.878876, lng: -87.635915 },
+      {name: "Millennium Park",lat: 41.882702, lng: -87.619394 }
+]
+
+var ViewModel = function() {
+  var self = this;
+
+  this.locationsList = ko.observableArray([]);
+  initialLocations.forEach(function(locationItem) {
+    self.locationsList.push( new Location(locationItem) );
+  });
+
+}
+
+
+ko.applyBindings(new ViewModel());
+
+
+
+

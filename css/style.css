@@ -5,25 +5,8 @@ body {
     background-color: #D3D38D !important;
     overflow: hidden;
 }
-/*#map-canvas {
-    margin: 0;
-    padding: 0;
-    right: 0;
-    top: 0;
-    position: absolute !important;
-    height: 100%;
-    width: 100%;
-}*/
 
 
-/*.input-group, .locations, .left-side {
-	left: 0px;
-	top: 0px;
-	padding-left: 1%;
-	z-index: 1;
-}*/
-
-/*.left-side,
-.locations {
-	display: inline-block;
-}*/
+ul {
+    list-style: none;
+}
