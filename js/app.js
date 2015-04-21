@@ -31,12 +31,21 @@ var initialLocations = [
 var ViewModel = function() {
   var self = this;
 
-  this.locationsList = ko.observableArray([]);
-  initialLocations.forEach(function(locationItem) {
-    self.locationsList.push( new Location(locationItem) );
-  });
+  self.locationsList = ko.observableArray(initialLocations);
+  self.query = ko.observable('');
 
-}
+  self.searchedLocations = ko.computed(function() {
+                return ko.utils.arrayFilter(self.locationsList(), function(search) {
+                    if (search.name.toLowerCase().match(self.query().toLowerCase())) {
+                        return search;
+                    }
+                });
+            });
+
+
+};
+
+
 
 
 ko.applyBindings(new ViewModel());
