@@ -8,27 +8,12 @@ function initialize() {
 
     var map = new google.maps.Map(mapElement, mapOptions);
     //had marker in here first 
- }
-
-google.maps.event.addDomListener(window, 'load', initialize);
-
-
-
-var Location = function(name, lat, lng) {
-  this.name = name;
-  this.lat = lat;
-  this.lng = lng;
-
- // var marker = new google.maps.Marker({
- //      position: new google.maps.LatLng(lat, lng),
- //      title: name,
- //      map: map,
- //      draggable: true
- //  });
-
+     function Marker(position, title, marker) {
+      var self = this;
+      self.position = position;
+      self.title = title;
+      self.marker = marker;
 }
-$(function(){
-
 
 var initialLocations = [
 
@@ -37,6 +22,14 @@ var initialLocations = [
     {name: "Willis Towers",lat: 41.878876, lng: -87.635915 },
     {name: "Millennium Park",lat: 41.882702, lng: -87.619394 }
 ]
+
+function addMarker(loc) {
+    return new google.maps.Marker({
+      position: loc.position,
+      map: map,
+      title: loc.title
+    });
+  }
 
 var ViewModel = function() {
   var self = this;
@@ -48,16 +41,22 @@ var ViewModel = function() {
             return location.name.toLowerCase().indexOf(search) >= 0;
         });
       });
+
+for (var i = 0; i < initialLocations.length; i++) {
+    var marker = new Marker(initialLocations[i].position, initialLocations[i].title, addAMarker(initialLocations[i]) );
+    self.locationsList.push(marker);
+  }
 };
-
-
-
-
-
 
 ko.applyBindings(new ViewModel());
 
-});
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+
 
 
 
