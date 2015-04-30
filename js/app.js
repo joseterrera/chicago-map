@@ -7,7 +7,7 @@ function initialize() {
     var mapElement = document.getElementById('map-canvas');
 
     var map = new google.maps.Map(mapElement, mapOptions);
-
+    //had marker in here first 
  }
 
 google.maps.event.addDomListener(window, 'load', initialize);
@@ -18,7 +18,17 @@ var Location = function(name, lat, lng) {
   this.name = name;
   this.lat = lat;
   this.lng = lng;
+
+ // var marker = new google.maps.Marker({
+ //      position: new google.maps.LatLng(lat, lng),
+ //      title: name,
+ //      map: map,
+ //      draggable: true
+ //  });
+
 }
+$(function(){
+
 
 var initialLocations = [
 
@@ -30,25 +40,24 @@ var initialLocations = [
 
 var ViewModel = function() {
   var self = this;
-
   self.locationsList = ko.observableArray(initialLocations);
   self.query = ko.observable('');
-
-  self.searchedLocations = ko.computed(function() {
-                return ko.utils.arrayFilter(self.locationsList(), function(search) {
-                    if (search.name.toLowerCase().match(self.query().toLowerCase())) {
-                        return search;
-                    }
-                });
-            });
-
-
+  self.locationsList = ko.computed(function() {
+        var search = self.query().toLowerCase();
+         return ko.utils.arrayFilter(self.locationsList(), function(location) {
+            return location.name.toLowerCase().indexOf(search) >= 0;
+        });
+      });
 };
 
 
 
 
+
+
 ko.applyBindings(new ViewModel());
+
+});
 
 
 
