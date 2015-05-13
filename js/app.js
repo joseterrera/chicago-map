@@ -3,7 +3,7 @@
 function initialize() {
     var mapOptions = {
       center: { lat: 41.882702, lng: -87.619394},
-      zoom: 15
+      zoom: 13
     };
     var mapElement = document.getElementById('map-canvas');
 
@@ -63,7 +63,8 @@ var ViewModel = function() {
     this.isVisible(true);
 
     infowindow = new google.maps.InfoWindow({
-      content: "contentString"
+      content: '<div><h3>' + marker.title + '</h3>' +
+        '</div>' +'<button class=" forFlickr btn btn-info">pictures</button>'
   });
 
 
