@@ -8,52 +8,61 @@ function initialize() {
     var mapElement = document.getElementById('map-canvas');
 
     var map = new google.maps.Map(mapElement, mapOptions);
-    //had marker in here first 
+   
+ 
 
-    var initialLocations = [
+var ViewModel = function() {
+  //self = this is used so you can always have a reference to the object ViewModel, so you can access its methods and properties
+  var self = this;
+  self.initialLocations = [
+    new point("Dollop", 41.877124, -87.629006 ),
+    new point("Magnificent Mile", 41.894809, -87.624214 ),
+    new point("Willis Towers", 41.878876, -87.635915 ),
+    new point("Millennium Park", 41.882702, -87.619394 )
+  ]
 
-    {name: "Dollop",lat: 41.877124, lng: -87.629006 },
-    {name: "Magnificent Mile",lat: 41.894809, lng: -87.624214 },
-    {name: "Willis Towers",lat: 41.878876, lng: -87.635915 },
-    {name: "Millennium Park",lat: 41.882702, lng: -87.619394 }
-    ]
+  self.query = ko.observable('');
+  self.locationsList = ko.computed(function() {
+        var search = self.query().toLowerCase();
+         return ko.utils.arrayFilter(self.initialLocations, function(location) {
+            //if a location matches a search the variable will save it.
+            //With this variable I filter the search
+            var match = location.name.toLowerCase().indexOf(search) >= 0;
+            location.isVisible(match);
+            return match;
+    });
+  });
 
-
-function point(name, lat, lng) {
+//this is part of the ViewModel, it will modify the view depending on what 
+//I type on the search
+  function point(name, lat, lng) {
     this.name = name;
-    this.lat = ko.observable(lat);
-    this.lng = ko.observable(lng);
+    this.lat = lat;
+    this.lng = lng;
 
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(lat, lng),
         title: name,
         map: map,
-        draggable: true
+        animation: google.maps.Animation.DROP
+    });
+    // isVisible stems off from point: since it is an observable
+    //I can observe it constantly and allow it to act when I change t
+    //the value. So, the marker will show or not depending on the search.
+    this.isVisible = ko.observable(false);
+    //subscribe reacts to changes on the view model
+    //the subscribe function will check if false changes to true.
+    this.isVisible.subscribe(function(currentState) {
+      if (currentState) {
+        marker.setMap(map);
+      } else {
+        marker.setMap(null);
+      }
     });
 
-    //if you need the poition while dragging
-    google.maps.event.addListener(marker, 'drag', function() {
-        var pos = marker.getPosition();
-        this.lat(pos.lat());
-        this.lng(pos.lng());
-    }.bind(this));
-
-}
-
-
-var ViewModel = function() {
-  var self = this;
-  self.locationsList = ko.observableArray(initialLocations);
-  self.query = ko.observable('');
-  self.locationsList = ko.computed(function() {
-        var search = self.query().toLowerCase();
-         return ko.utils.arrayFilter(self.locationsList(), function(location) {
-            return location.name.toLowerCase().indexOf(search) >= 0;
-    });
-  });
+    this.isVisible(true);
+  }
 };
-
-
 
 ko.applyBindings(new ViewModel());
 
