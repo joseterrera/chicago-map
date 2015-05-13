@@ -1,4 +1,4 @@
-
+ var infowindow = null;
 // Google Maps
 function initialize() {
     var mapOptions = {
@@ -61,7 +61,17 @@ var ViewModel = function() {
     });
 
     this.isVisible(true);
-  }
+
+    infowindow = new google.maps.InfoWindow({
+      content: "contentString"
+  });
+
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.open(map,marker);
+  });
+}
+
 };
 
 ko.applyBindings(new ViewModel());
