@@ -62,10 +62,12 @@ var ViewModel = function() {
 
     this.isVisible(true);
 
+
     infowindow = new google.maps.InfoWindow({
-      content: '<div><h3>' + marker.title + '</h3>' +
-        '</div>' +'<button class=" forFlickr btn btn-info">pictures</button>'
+      content:  +'<button class=" forFlickr btn btn-info">pictures</button>'
+      apiInfoWindow();
   });
+
 
 
   google.maps.event.addListener(marker, 'click', function() {
@@ -82,48 +84,38 @@ ko.applyBindings(new ViewModel());
 google.maps.event.addDomListener(window, 'load', initialize);
 
 
-
-///a partir de aca 
-
-// esto es lo que hice con apis. esta basado en uno que hice antes.
-// por ahi me podrias tirar unas pistas.
-// dos preguntas: 
-// 1. el flickrsecret lo vi por ahi, pero no se si tengo que agregarlo a la api string.
-// 2. como agrego las fotos al mapa si el html del mapa esta en el ViewModel?
-// 3. alguna otra cosa ves que este mal encaminada o a corregir..
-
-
-
 var flickrKey = 'b67c65fb6ee83a3db0f50a89c48c606';
-var flickrSecret = 'edc2b64dc4718b93';
 
 var infoWindow = null;
 
-$(document).ready(function(){
+function apiInfoWindow(place) {
     var flickrAPI = "http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b67c65fb6ee83a3db0f50a89c48c606&user_id=joseterrera&has_geo=1&extras=geo&format=json&jsoncallback=?";
     var placesAPI = $(this).text();
+    
     var flickrOptions = {
       tags: placesAPI,
       format:"json"
     };
+    
     function displayPhotos(data) {
       var photosHTML;
       $.each(data.items, function(i, photo) {
             photosHTML = "<h4>" + venue.name + "</h3>";
             photoHTML += '<p class="img-responsive">';
             photoHTML += '<a href="' + photo.link + ' " class="image">';
-            photoHTML += '<img src=" 'photo.media.m + '"></a></p>';
+            photoHTML += '<img src="' + photo.media.m + '"></a></li>';
       });
   
-      $('#photos').html(photosHTML);
+      $('.forFlickr').html(photosHTML);
    
      
       
     }
 
     $.getJSON(flickrAPI, flickrOptions, displayPhotos);
-  });
-}); //end ready
+
+  }
+
 
 
 
