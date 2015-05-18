@@ -96,14 +96,14 @@ function apiInfoWindow(place) {
       tags: placesAPI,
       format:"json"
     };
-    
+
     function displayPhotos(data) {
       var photosHTML;
       $.each(data.items, function(i, photo) {
             photosHTML = "<h4>" + venue.name + "</h3>";
             photoHTML += '<p class="img-responsive">';
             photoHTML += '<a href="' + photo.link + ' " class="image">';
-            photoHTML += '<img src="' + photo.media.m + '"></a></li>';
+            photoHTML += '<img src="' + photo.media.m + '"></a></p>';
       });
   
       $('.forFlickr').html(photosHTML);
