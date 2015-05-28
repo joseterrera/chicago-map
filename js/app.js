@@ -1,4 +1,4 @@
- var infowindow = null;
+
 // Google Maps
 function initialize() {
     var mapOptions = {
@@ -63,17 +63,19 @@ var ViewModel = function() {
     this.isVisible(true);
 
 
-    infowindow = new google.maps.InfoWindow({
-      content:  +'<button class=" forFlickr btn btn-info">pictures</button>'
-      apiInfoWindow();
+   var infowindow = new google.maps.InfoWindow({
+      content:  '<div><h3>' + marker.title + '</h3>' +
++        '</div>' +'<button onclick="apiInfoWindow()" class="forFlickr btn btn-info">pictures</button>'
   });
 
-
-
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map,marker);
+    
+     google.maps.event.addListener(marker, 'click', function() {
+      infowindow.close();
+      infowindow.open(map,marker);
   });
 }
+
+
 
 };
 
@@ -86,10 +88,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 var flickrKey = 'b67c65fb6ee83a3db0f50a89c48c606';
 
-var infoWindow = null;
 
 function apiInfoWindow(place) {
-    var flickrAPI = "http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b67c65fb6ee83a3db0f50a89c48c606&user_id=joseterrera&has_geo=1&extras=geo&format=json&jsoncallback=?";
+    var flickrAPI = "http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b67c65fb6ee83a3db0f50a89c48c606&user_id=30565831@N03&format=json&jsoncallback=?";
     var placesAPI = $(this).text();
     
     var flickrOptions = {
@@ -100,7 +101,7 @@ function apiInfoWindow(place) {
     function displayPhotos(data) {
       var photosHTML;
       $.each(data.items, function(i, photo) {
-            photosHTML = "<h4>" + venue.name + "</h3>";
+            photosHTML = "<h3>" + venue.name + "</h3>";
             photoHTML += '<p class="img-responsive">';
             photoHTML += '<a href="' + photo.link + ' " class="image">';
             photoHTML += '<img src="' + photo.media.m + '"></a></p>';
@@ -112,10 +113,10 @@ function apiInfoWindow(place) {
       
     }
 
+
     $.getJSON(flickrAPI, flickrOptions, displayPhotos);
 
   }
-
 
 
 
