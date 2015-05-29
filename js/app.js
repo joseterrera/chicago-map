@@ -86,11 +86,11 @@ ko.applyBindings(new ViewModel());
 google.maps.event.addDomListener(window, 'load', initialize);
 
 
-var flickrKey = 'b67c65fb6ee83a3db0f50a89c48c606';
+var flickrKey = '5b67c65fb6ee83a3db0f50a89c48c606';
 
 
 function apiInfoWindow(place) {
-    var flickrAPI = "http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b67c65fb6ee83a3db0f50a89c48c606&user_id=30565831@N03&format=json&jsoncallback=?";
+    var flickrAPI = "https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=5b67c65fb6ee83a3db0f50a89c48c606&user_id=30565831@N03&format=json&jsoncallback=?";
     var placesAPI = $(this).text();
     
     var flickrOptions = {
@@ -99,17 +99,19 @@ function apiInfoWindow(place) {
     };
 
     function displayPhotos(data) {
-      var photosHTML;
-      $.each(data.items, function(i, photo) {
-            photosHTML = "<h3>" + venue.name + "</h3>";
-            photoHTML += '<p class="img-responsive">';
-            photoHTML += '<a href="' + photo.link + ' " class="image">';
-            photoHTML += '<img src="' + photo.media.m + '"></a></p>';
-      });
+      var photosHTML = '';
+      console.log(data);
+      data.photos.photo
+        .filter(function(photo){
+          return photo.ispublic === 1;
+        })
+        .forEach(function(photo) {      
+          photosHTML += '<img src="href="http://www.flickr.com/pictures/"' + photo.owner + "/" + photo.id + ' " class="image">';
+        });
   
       $('.forFlickr').html(photosHTML);
    
-     
+     console.log(photosHTML);
       
     }
 
