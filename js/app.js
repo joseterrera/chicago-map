@@ -1,4 +1,5 @@
-
+var infowindow,
+    li;
 // Google Maps
 function initialize() {
     var mapOptions = {
@@ -32,6 +33,12 @@ var ViewModel = function() {
             return match;
     });
   });
+  self.listClick = function(marker) {
+      marker.marker.setAnimation(google.maps.Animation.BOUNCE);
+      marker.infowindow.open(map, marker.marker);
+      setTimeout(function(){ marker.marker.setAnimation(null); }, 1400);
+    };
+
 
 //this is part of the ViewModel, it will modify the view depending on what 
 //I type on the search
@@ -62,22 +69,26 @@ var ViewModel = function() {
 
     this.isVisible(true);
 
-
-   var infowindow = new google.maps.InfoWindow({
-      content:  '<div><h3>' + marker.title + '</h3>' +
-+        '</div>' +'<button onclick="apiInfoWindow()" class="forFlickr btn btn-info">pictures</button>'
-  });
+    //create new infoWindow
+   infowindow = new google.maps.InfoWindow();
 
     
      google.maps.event.addListener(marker, 'click', function() {
-      infowindow.close();
+      infowindow.setContent('<div><h3>' + marker.title + '</h3>' +
+ '</div>' +'<button onclick="apiInfoWindow()" class="forFlickr btn btn-info">pictures</button>');
       infowindow.open(map,marker);
   });
-}
+
+li = document.getElementById("list");
+  //Trigger a click event to marker when the button is clicked.
+  google.maps.event.addDomListener(li, "click", function(){
+    google.maps.event.trigger(marker, "click");
+  });
+} //end point
 
 
 
-};
+}; //end ViewModel
 
 ko.applyBindings(new ViewModel());
 
@@ -87,7 +98,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 var flickrKey = '5b67c65fb6ee83a3db0f50a89c48c606';
-
+var $forFlickr = $('.forFlickr');
+var photosHTML;
+var flickrRequestTimeout = setTimeout(function(){
+  photosHTML.text('failed to load resources');
+}, 8000);
 
 function apiInfoWindow(place) {
     var flickrAPI = "https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=5b67c65fb6ee83a3db0f50a89c48c606&user_id=30565831@N03&format=json&jsoncallback=?";
@@ -99,7 +114,7 @@ function apiInfoWindow(place) {
     };
 
     function displayPhotos(data) {
-      var photosHTML = '';
+      photosHTML = '';
       console.log(data);
       data.photos.photo
         .filter(function(photo){
@@ -112,13 +127,15 @@ function apiInfoWindow(place) {
       $('.forFlickr').html(photosHTML);
    
      console.log(photosHTML);
+
+     clearTimeout(flickrRequestTimeout);
       
-    }
+    };//end displayPhotos
 
 
     $.getJSON(flickrAPI, flickrOptions, displayPhotos);
 
-  }
+  }; //end apiWindow
 
 
 
