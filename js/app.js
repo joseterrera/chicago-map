@@ -33,11 +33,6 @@ var ViewModel = function() {
             return match;
     });
   });
-  self.listClick = function(marker) {
-      marker.marker.setAnimation(google.maps.Animation.BOUNCE);
-      marker.infowindow.open(map, marker.marker);
-      setTimeout(function(){ marker.marker.setAnimation(null); }, 1400);
-    };
 
 
 //this is part of the ViewModel, it will modify the view depending on what 
@@ -53,6 +48,9 @@ var ViewModel = function() {
         map: map,
         animation: google.maps.Animation.DROP
     });
+         self.listClick = function(place) {
+        google.maps.event.trigger(place.marker,'click');
+    }   
     // isVisible stems off from point: since it is an observable
     //I can observe it constantly and allow it to act when I change t
     //the value. So, the marker will show or not depending on the search.
@@ -79,11 +77,14 @@ var ViewModel = function() {
       infowindow.open(map,marker);
   });
 
-li = document.getElementById("list");
-  //Trigger a click event to marker when the button is clicked.
-  google.maps.event.addDomListener(li, "click", function(){
-    google.maps.event.trigger(marker, "click");
-  });
+// li = document.getElementById("list");
+//   //Trigger a click event to marker when the button is clicked.
+//   google.maps.event.addDomListener(li, "click", function(){
+//     google.maps.event.trigger(marker, "click");
+//   });
+
+
+
 } //end point
 
 
@@ -105,6 +106,8 @@ var flickrRequestTimeout = setTimeout(function(){
 }, 8000);
 
 function apiInfoWindow(place) {
+             //url: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=613027bbd85c6531eb248c30795029fb&tags="+vm.searchstring()+"&safe_search=1&per_page=5&format=json&jsoncallback=?",
+
     var flickrAPI = "https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=5b67c65fb6ee83a3db0f50a89c48c606&user_id=30565831@N03&format=json&jsoncallback=?";
     var placesAPI = $(this).text();
     
@@ -120,11 +123,11 @@ function apiInfoWindow(place) {
         .filter(function(photo){
           return photo.ispublic === 1;
         })
-        .forEach(function(photo) {      
-          photosHTML += '<img src="href="http://www.flickr.com/pictures/"' + photo.owner + "/" + photo.id + ' " class="image">';
+        .forEach(function(photo) {  
+          photosHTML += "<img src='https://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg'>";    
         });
   
-      $('.forFlickr').html(photosHTML);
+      $('.forFlickr').html(photosHTML);https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20flickr.people.publicphotos%20where%20user_id%3D%2226545327%40N00%22%20and%20api_key%3D%2292bd0de55a63046155c09f1a06876875%22%3B&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys
    
      console.log(photosHTML);
 
