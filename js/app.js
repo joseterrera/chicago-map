@@ -34,6 +34,11 @@ var ViewModel = function() {
     });
   });
 
+  // Creas una funcion en el viewmodel para que la puedas acceder desde el data-bind en el html y desde esta llamas a la funcion del point para que se muestre
+  self.listClick = function() {
+        this.open();
+    };
+
 
 //this is part of the ViewModel, it will modify the view depending on what 
 //I type on the search
@@ -48,9 +53,11 @@ var ViewModel = function() {
         map: map,
         animation: google.maps.Animation.DROP
     });
-         self.listClick = function(place) {
-        google.maps.event.trigger(place.marker,'click');
-    }   
+
+    // Esta es la funcion local del point que tiene acceso a la variable local marker
+    this.open = function() {
+      google.maps.event.trigger(marker,'click');
+    };
     // isVisible stems off from point: since it is an observable
     //I can observe it constantly and allow it to act when I change t
     //the value. So, the marker will show or not depending on the search.
@@ -102,12 +109,14 @@ var flickrKey = '5b67c65fb6ee83a3db0f50a89c48c606';
 var $forFlickr = $('.forFlickr');
 var photosHTML;
 var flickrRequestTimeout = setTimeout(function(){
-  photosHTML.text('failed to load resources');
+  // este te tiraba error por que estabas tratando de acceder a una propiedad text que no habias definido, asignalo como string y camina.
+  photosHTML = 'failed to load resources';
 }, 8000);
 
 function apiInfoWindow(place) {
              //url: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=613027bbd85c6531eb248c30795029fb&tags="+vm.searchstring()+"&safe_search=1&per_page=5&format=json&jsoncallback=?",
 
+    // Como le pasas tu user id te devuelve solo tus fotos, te copio en el mail un link de la documentacion del api en donde explica lo del user id y te muestra todos los parametros que podes pasarle, por ej la long y lat para cargar fotos de ese puento en particular
     var flickrAPI = "https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=5b67c65fb6ee83a3db0f50a89c48c606&user_id=30565831@N03&format=json&jsoncallback=?";
     var placesAPI = $(this).text();
     

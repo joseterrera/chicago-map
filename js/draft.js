@@ -1,4 +1,6 @@
 
+"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=b67c65fb6ee83a3db0f50a89c48c606&user_id=joseterrera&has_geo=1&extras=geo&format=json&jsoncallback=?";
+5b67c65fb6ee83a3db0f50a89c48c606
 
 //   // MODEL // Locations
 
