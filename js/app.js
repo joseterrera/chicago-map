@@ -1,23 +1,27 @@
 var infowindow,
-    latApi,  
+    latApi,
     vm,
     map;
 
+//(41.875523, -87.631747) 41.154228, -88.649831  41.862313, -87.616688
 // Google Maps
 function initialize() {
   var mapOptions = {
-    center: { lat: 41.877124, lng: -87.629006},
+    center: { lat: 41.862313, lng: -87.616688},
     zoom: 13
   };
 
   var mapElement = document.getElementById('map-canvas');
 
   map = new google.maps.Map(mapElement, mapOptions);
-   
+
   vm = new ViewModel();
   ko.applyBindings(vm);
 
   latApi = vm.initialLocations;
+
+
+
  }//end initialize
 
 
@@ -43,7 +47,7 @@ function ViewModel() {
             return match;
     });
   });
-  //created a function in the viewmodel so I can access it in the data-bind (html), 
+  //created a function in the viewmodel so I can access it in the data-bind (html),
   //and from here call the function point so it shows
   self.listClick = function() {
         this.open();
@@ -51,7 +55,7 @@ function ViewModel() {
 
 }; //end ViewModel
 
-//point will modify the view depending on what 
+//point will modify the view depending on what
 //I type on the search
 function point(name, lat, lng) {
   this.name = name;
@@ -65,6 +69,8 @@ function point(name, lat, lng) {
       animation: google.maps.Animation.DROP
   });
 
+  var latLng = marker.getPosition(); // returns LatLng object
+  map.setCenter(latLng); // setCenter takes a LatLng object
   //this is the local function of point that has access to the variable in the local marker.
   this.open = function() {
     google.maps.event.trigger(marker,'click');
@@ -86,17 +92,21 @@ function point(name, lat, lng) {
   this.isVisible(true);
 
   //create new infoWindow
- infowindow = new google.maps.InfoWindow();
+ infowindow = new google.maps.InfoWindow({
+        minWidth: 50, //width of your infoWindow
+        arrowSize: 3 //set your desired size
+ });
 
-  
+
    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent('<div><h3>' + marker.title + '</h3>' +
+      infowindow.setContent('<div class="info-container"><h3>' + marker.title + '</h3>' +
   '</div>' +'<button onclick="apiInfoWindow(event)" data-location="'+marker.title+'" class="forFlickr btn btn-info">pictures</button>');
       infowindow.open(map,marker);
   });
 
 }; //end point
 
+google.maps.event.addDomListener(window, 'resize', initialize);
 google.maps.event.addDomListener(window, 'load', initialize);
 
 
@@ -133,8 +143,8 @@ function apiInfoWindow(event) {
       .filter(function(photo){
         return photo.ispublic === 1;
       })
-      .forEach(function(photo) {  
-        photosHTML += "<div class='photos-div'><img src='https://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg class='img-responsive'></div>";    
+      .forEach(function(photo) {
+        photosHTML += "<div class='info-container'><img src='https://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg class='img-thumbnail'></div>";
       });
 
     $('.forFlickr').html(photosHTML);
@@ -142,7 +152,7 @@ function apiInfoWindow(event) {
    console.log(photosHTML);
 
    clearTimeout(flickrRequestTimeout);
-    
+
   };//end displayPhotos
 
 }; //end apiWindow

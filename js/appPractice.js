@@ -75,6 +75,7 @@ var latApi = vm.initialLocations;
 //     //create new infoWindow
 //    infowindow = new google.maps.InfoWindow();
 
+    //https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20flickr.people.publicphotos%20where%20user_id%3D%2226545327%40N00%22%20and%20api_key%3D%2292bd0de55a63046155c09f1a06876875%22%3B&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys
     
 //      google.maps.event.addListener(marker, 'click', function() {
 //       infowindow.setContent('<div><h3>' + marker.title + '</h3>' +
@@ -89,3 +90,12 @@ var latApi = vm.initialLocations;
 // ko.applyBindings(vm);
 
 //  }
+
+  // $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&nojsoncallback=',{
+  //   api_key: '5b67c65fb6ee83a3db0f50a89c48c606',
+  //   privacy_filter: 1,
+  //   content_type: 1,
+  //   format: 'jsonp',
+  //   text: place
+  // },
+  // displayPhotos);
