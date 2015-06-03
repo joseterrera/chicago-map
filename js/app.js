@@ -6,7 +6,7 @@ var infowindow,
 // Google Maps
 function initialize() {
   var mapOptions = {
-    center: { lat: 41.882702, lng: -87.619394},
+    center: { lat: 41.877124, lng: -87.629006},
     zoom: 13
   };
 
@@ -43,14 +43,15 @@ function ViewModel() {
             return match;
     });
   });
-  //created a function in the viewmodel so I can access it in the data-bind (html), and from here call the function point so it shows..
+  //created a function in the viewmodel so I can access it in the data-bind (html), 
+  //and from here call the function point so it shows
   self.listClick = function() {
         this.open();
     };
 
 }; //end ViewModel
 
-//this is part of the ViewModel, it will modify the view depending on what 
+//point will modify the view depending on what 
 //I type on the search
 function point(name, lat, lng) {
   this.name = name;
@@ -104,21 +105,12 @@ var flickrKey = '5b67c65fb6ee83a3db0f50a89c48c606';
 var $forFlickr = $('.forFlickr');
 var photosHTML;
 var flickrRequestTimeout = setTimeout(function(){
-  // este te tiraba error por que estabas tratando de acceder a una propiedad text que no habias definido, asignalo como string y camina.
   photosHTML = 'failed to load resources';
 }, 8000);
 
 function apiInfoWindow(event) {
+  //extract the value of each data-location and insert it on string..
   var place = event.target.attributes['data-location'].value;
-
-  // $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&nojsoncallback=',{
-  //   api_key: '5b67c65fb6ee83a3db0f50a89c48c606',
-  //   privacy_filter: 1,
-  //   content_type: 1,
-  //   format: 'jsonp',
-  //   text: place
-  // },
-  // displayPhotos);
 
 
     $.ajax({
@@ -142,11 +134,11 @@ function apiInfoWindow(event) {
         return photo.ispublic === 1;
       })
       .forEach(function(photo) {  
-        photosHTML += "<img src='https://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg'>";    
+        photosHTML += "<div class='photos-div'><img src='https://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg class='img-responsive'></div>";    
       });
 
-    $('.forFlickr').html(photosHTML);https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20flickr.people.publicphotos%20where%20user_id%3D%2226545327%40N00%22%20and%20api_key%3D%2292bd0de55a63046155c09f1a06876875%22%3B&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys
- 
+    $('.forFlickr').html(photosHTML);
+
    console.log(photosHTML);
 
    clearTimeout(flickrRequestTimeout);
