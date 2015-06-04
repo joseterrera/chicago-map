@@ -14,14 +14,8 @@ function initialize() {
   var mapElement = document.getElementById('map-canvas');
 
   map = new google.maps.Map(mapElement, mapOptions);
-
   vm = new ViewModel();
   ko.applyBindings(vm);
-
-  latApi = vm.initialLocations;
-
-
-
  }//end initialize
 
 
@@ -99,7 +93,7 @@ function point(name, lat, lng) {
 
 
    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent('<div class="info-container"><h3>' + marker.title + '</h3>' +
+      infowindow.setContent('<div class="info-container"><p class="infoTitle">' + marker.title + '</p>' +
   '</div>' +'<button onclick="apiInfoWindow(event)" data-location="'+marker.title+'" class="forFlickr btn btn-info">pictures</button>');
       infowindow.open(map,marker);
   });
@@ -125,7 +119,7 @@ function apiInfoWindow(event) {
 
     $.ajax({
         dataType: "jsonp",
-        url: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=5b67c65fb6ee83a3db0f50a89c48c606&text="+place+"&safe_search=1&per_page=5&format=json&jsoncallback=?",
+        url: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=5b67c65fb6ee83a3db0f50a89c48c606&text="+place+"&safe_search=1&per_page=1&format=json&jsoncallback=?",
         success: displayPhotos,
         error: function (xhr, ajaxOptions, thrownError) {
             alert('failed');
@@ -144,7 +138,7 @@ function apiInfoWindow(event) {
         return photo.ispublic === 1;
       })
       .forEach(function(photo) {
-        photosHTML += "<div class='info-container'><img src='https://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg class='img-thumbnail'></div>";
+        photosHTML += "<div class='info-images'><img src='https://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg width='170' height='170'></div>";
       });
 
     $('.forFlickr').html(photosHTML);
